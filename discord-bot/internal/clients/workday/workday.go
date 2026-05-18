@@ -30,41 +30,42 @@ var channelIDs []string = []string{
 }
 
 func InitJobsCache() {
-	standardJobs, err := getWorkdayJobPostings(StandardWorkdayRequestURL, standardJobFamilyGroupIDs)
+	companies, err := loadCompanies()
 	if err != nil {
-		slog.Error("Unable to get job postings from The Standard")
+		panic("Unable to load companies")
 	}
 
-	apexJobs, err := getWorkdayJobPostings(ApexWorkdayRequestURL, apexJobFamilyGroupIDs)
-	if err != nil {
-		slog.Error("Unable to get job postings from The Apex")
-	}
+	for _, company := range companies {
+		jobs, err := getWorkdayJobPostings(company.WorkdayRequestURL, company.JobFamilyGroupIDs)
+		if err != nil {
+			slog.Error(fmt.Sprintf("Unable to get job postings from %s", company.Name))
+			continue
+		}
 
-	jobsCache["Standard"] = append(jobsCache["Standard"], standardJobs...)
-	jobsCache["Apex"] = append(jobsCache["Apex"], apexJobs...)
+		jobsCache[company.Name] = append(jobsCache[company.Name], jobs...)
+	}
 }
 
 func GetNewJobPostings(client *bot.Client) {
-	standardJobs, err := getWorkdayJobPostings(StandardWorkdayRequestURL, standardJobFamilyGroupIDs)
+	companies, err := loadCompanies()
 	if err != nil {
-		slog.Error("Unable to get job postings from The Standard")
+		panic("Unable to load companies")
 	}
 
-	apexJobs, err := getWorkdayJobPostings(ApexWorkdayRequestURL, apexJobFamilyGroupIDs)
-	if err != nil {
-		slog.Error("Unable to get job postings from The Standard")
-	}
+	for _, company := range companies {
+		jobs, err := getWorkdayJobPostings(company.WorkdayRequestURL, company.JobFamilyGroupIDs)
+		if err != nil {
+			slog.Error(fmt.Sprintf("Unable to get job postings from %s", company.Name))
+			continue
+		}
 
-	if len(standardJobs) != len(jobsCache["Standard"]) {
-		jobPosting := standardJobs[0]
-		notifyNewJob(client, &jobPosting, "The Standard", StandardWorkdayBaseURL)
-		jobsCache["Standard"] = standardJobs
-	}
+		jobsCache[company.Name] = append(jobsCache[company.Name], jobs...)
 
-	if len(apexJobs) != len(jobsCache["Apex"]) {
-		jobPosting := standardJobs[0]
-		notifyNewJob(client, &jobPosting, "Apex Fintech Solutions", ApexWorkdayBaseURL)
-		jobsCache["Apex"] = standardJobs
+		if len(jobs) != len(jobsCache[company.Name]) {
+			jobPosting := jobs[0]
+			notifyNewJob(client, &jobPosting, company.Name, StandardWorkdayBaseURL)
+			jobsCache[company.Name] = jobs
+		}
 	}
 }
 

@@ -1,0 +1,20 @@
+{
+    "companies": [
+        {
+            "Name": "The Standard",
+            "WorkdayBaseURL": "https://standard.wd1.myworkdayjobs.com",
+            "WorkdayRequestURL": "https://standard.wd1.myworkdayjobs.com/wday/cxs/standard/Search/jobs",
+            "JobFamilyGroupIDs": [
+                "4b3d59d7ab731002007ca34c13c90000"
+            ]
+        },
+        {
+            "Name": "Apex Fintech Solutions",
+            "WorkdayBaseURL": "https://peak6group.wd1.myworkdayjobs.com",
+            "WorkdayRequestURL": "https://peak6group.wd1.myworkdayjobs.com/wday/cxs/peak6group/apexfintechsolutions/jobs",
+            "JobFamilyGroupIDs": [
+                "9319b7dfa5ee10212c5612fee7de0000"
+            ]
+        }
+    ]
+}
