@@ -13,15 +13,6 @@ import (
 	"github.com/ricer0ll/pcep-job-board/discord-bot/api/workday/dto"
 )
 
-const StandardWorkdayBaseURL = "https://standard.wd1.myworkdayjobs.com"
-const ApexWorkdayBaseURL = "https://https://peak6group.wd1.myworkdayjobs.com"
-
-const StandardWorkdayRequestURL = "https://standard.wd1.myworkdayjobs.com/wday/cxs/standard/Search/jobs"
-const ApexWorkdayRequestURL = "https://peak6group.wd1.myworkdayjobs.com/wday/cxs/peak6group/apexfintechsolutions/jobs"
-
-var standardJobFamilyGroupIDs []string = []string{"4b3d59d7ab731002007ca34c13c90000"}
-var apexJobFamilyGroupIDs []string = []string{"9319b7dfa5ee10212c5612fee7de0000"}
-
 var jobsCache map[string][]dto.JobPosting = make(map[string][]dto.JobPosting)
 
 // list of channels to notify
@@ -63,7 +54,7 @@ func GetNewJobPostings(client *bot.Client) {
 
 		if len(jobs) != len(jobsCache[company.Name]) {
 			jobPosting := jobs[0]
-			notifyNewJob(client, &jobPosting, company.Name, StandardWorkdayBaseURL)
+			notifyNewJob(client, &jobPosting, company.Name, company.WorkdayBaseURL)
 			jobsCache[company.Name] = jobs
 		}
 	}
