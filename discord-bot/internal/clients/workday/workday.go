@@ -14,6 +14,7 @@ import (
 )
 
 const StandardWorkdayBaseURL = "https://standard.wd1.myworkdayjobs.com"
+const ApexWorkdayBaseURL = "https://https://peak6group.wd1.myworkdayjobs.com"
 
 const StandardWorkdayRequestURL = "https://standard.wd1.myworkdayjobs.com/wday/cxs/standard/Search/jobs"
 const ApexWorkdayRequestURL = "https://peak6group.wd1.myworkdayjobs.com/wday/cxs/peak6group/apexfintechsolutions/jobs"
@@ -56,19 +57,19 @@ func GetNewJobPostings(client *bot.Client) {
 
 	if len(standardJobs) != len(jobsCache["Standard"]) {
 		jobPosting := standardJobs[0]
-		notifyNewJob(client, &jobPosting, "The Standard")
+		notifyNewJob(client, &jobPosting, "The Standard", StandardWorkdayBaseURL)
 		jobsCache["Standard"] = standardJobs
 	}
 
 	if len(apexJobs) != len(jobsCache["Apex"]) {
 		jobPosting := standardJobs[0]
-		notifyNewJob(client, &jobPosting, "Apex Fintech Solutions")
+		notifyNewJob(client, &jobPosting, "Apex Fintech Solutions", ApexWorkdayBaseURL)
 		jobsCache["Apex"] = standardJobs
 	}
 }
 
-func notifyNewJob(client *bot.Client, jobPosting *dto.JobPosting, company string) {
-	embed := generateNewJobPostingEmbed(jobPosting, company)
+func notifyNewJob(client *bot.Client, jobPosting *dto.JobPosting, company string, workdayURL string) {
+	embed := generateNewJobPostingEmbed(jobPosting, company, workdayURL)
 	for _, channelID := range channelIDs {
 		client.Rest.CreateMessage(
 			snowflake.MustParse(channelID),
@@ -124,10 +125,10 @@ func mapJobPostingResponse(resp *http.Response) (*dto.JobPostingResponse, error)
 	return &responseObj, nil
 }
 
-func generateNewJobPostingEmbed(jobPosting *dto.JobPosting, company string) discord.Embed {
+func generateNewJobPostingEmbed(jobPosting *dto.JobPosting, company string, workdayURL string) discord.Embed {
 	var title string = fmt.Sprintf("New Job Posting from %s!", company)
 	var description string = fmt.Sprintf("Position: **%s**\nLocation: %s", jobPosting.Title, jobPosting.LocationsText)
-	var url string = StandardWorkdayBaseURL + fmt.Sprintf("/en-US/Search%s", jobPosting.ExternalPath)
+	var url string = workdayURL + fmt.Sprintf("/en-US/Search%s", jobPosting.ExternalPath)
 
 	embed := discord.NewEmbed().
 		WithTitle(title).

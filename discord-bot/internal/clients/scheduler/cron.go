@@ -15,6 +15,8 @@ func InitCronJob(client *bot.Client) gocron.Scheduler {
 		panic("Failed to start cron scheduler!")
 	}
 
+	workday.InitJobsCache()
+
 	j, err := scheduler.NewJob(
 		gocron.DailyJob(
 			1,
