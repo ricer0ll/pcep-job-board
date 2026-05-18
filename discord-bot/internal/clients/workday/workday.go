@@ -120,7 +120,7 @@ func mapJobPostingResponse(resp *http.Response) (*dto.JobPostingResponse, error)
 func generateNewJobPostingEmbed(jobPosting *dto.JobPosting, company string, workdayURL string) discord.Embed {
 	var title string = fmt.Sprintf("New Job Posting from %s!", company)
 	var description string = fmt.Sprintf("Position: **%s**\nLocation: %s", jobPosting.Title, jobPosting.LocationsText)
-	var url string = workdayURL + fmt.Sprintf("/en-US/Search%s", jobPosting.ExternalPath)
+	var url string = workdayURL + fmt.Sprintf("%s", jobPosting.ExternalPath)
 
 	embed := discord.NewEmbed().
 		WithTitle(title).

@@ -3,6 +3,7 @@ package scheduler
 import (
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/disgoorg/disgo/bot"
 	"github.com/go-co-op/gocron/v2"
@@ -10,7 +11,7 @@ import (
 )
 
 func InitCronJob(client *bot.Client) gocron.Scheduler {
-	scheduler, err := gocron.NewScheduler()
+	scheduler, err := gocron.NewScheduler(gocron.WithLocation(time.Local))
 	if err != nil {
 		panic("Failed to start cron scheduler!")
 	}
