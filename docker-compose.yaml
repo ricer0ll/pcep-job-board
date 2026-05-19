@@ -8,3 +8,4 @@ services:
       - ~/.config/gcloud:/root/.config/gcloud:ro
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json # uses local gcloud conf :P
+      - TZ=America/Los_Angeles
