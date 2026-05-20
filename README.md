@@ -1,10 +1,33 @@
 # PCEP Job Board Bot
 
-Just a discord bot that notifies if a new job is found for the following companies:  
+Just a discord bot for the PCEP server that notifies if a new job is found for the following companies:  
 [The Standard](https://standard.wd1.myworkdayjobs.com/Search)  
 [Apex Fintech Solutions](https://peak6group.wd1.myworkdayjobs.com/apexfintechsolutions)  
 [Trimble]("https://trimble.wd1.myworkdayjobs.com/en-US/TrimbleCareers/jobs")  
 
+The bot uses the company's Workday API to fetch job listings, with a scheduled cron job running hourly on weekdays from 6 AM to 12 PM to look for any newly posted jobs.
+
 Adding more soon! If you want to suggest a company, feel free to create a request on the [Issues](https://github.com/ricer0ll/pcep-job-board/issues) section.  
 
-Contributions are also welcomed.
+## Contributing
+Contributions are also welcomed. The bot is written in Go using the [DisGo](https://github.com/disgoorg/disgo) library. 
+
+## Running Locally
+You may also run this bot locally on your machine using your own Discord Bot Token and can specify which channel to send notifications to. Create a copy of the `.env.example` and replace the values. To run locally, you can try running it directly, but I recommend installing Docker in your system to ensure the 
+
+Then, change your current working directory to the root of `discord-bot` directory:  
+```
+$ pwd
+/home/user/some-place/pcep-job-board/discord-bot
+```  
+
+Install go packages:  
+`$ go mod tidy`  
+
+A `.docker-compose.yaml` has been provided to easily spin up and down the container. Remove the first period.  
+
+Start the docker container with:  
+`$ docker compose up -d --build`  
+
+To stop the container, run:  
+`$ docker compose down -v`

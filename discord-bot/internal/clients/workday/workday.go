@@ -12,15 +12,11 @@ import (
 	"github.com/disgoorg/disgo/discord"
 	"github.com/disgoorg/snowflake/v2"
 	"github.com/ricer0ll/pcep-job-board/discord-bot/api/workday/dto"
+	"github.com/ricer0ll/pcep-job-board/discord-bot/internal/utils"
 )
 
 var jobsCache map[string][]dto.JobPosting = make(map[string][]dto.JobPosting)
 var companyJsonPath = filepath.Join("internal", "clients", "workday", "companies.json")
-
-// list of channels to notify
-var channelIDs []string = []string{
-	"1505733135357313115", // dev server
-}
 
 func InitJobsCache() {
 	companies, err := loadCompanies(companyJsonPath)
@@ -86,12 +82,11 @@ func GetNewJobPostings(client *bot.Client) {
 
 func notifyNewJob(client *bot.Client, jobPosting *dto.JobPosting, company string, workdayURL string) {
 	embed := generateNewJobPostingEmbed(jobPosting, company, workdayURL)
-	for _, channelID := range channelIDs {
-		client.Rest.CreateMessage(
-			snowflake.MustParse(channelID),
-			discord.NewMessageCreate().WithEmbeds(embed),
-		)
-	}
+	client.Rest.CreateMessage(
+		snowflake.MustParse(utils.GetDiscordChannelID()),
+		discord.NewMessageCreate().WithEmbeds(embed),
+	)
+
 }
 
 func getWorkdayJobPostings(
@@ -105,6 +100,7 @@ func getWorkdayJobPostings(
 
 	request := dto.JobPostingRequest{
 		AppliedFacets: dto.AppliedFacet{
+			JobFamily:       jobFamily,
 			JobFamilyGroup:  jobFamilyGroup,
 			LocationCountry: locationCountry,
 			Locations:       locations,
