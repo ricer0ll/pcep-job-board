@@ -11,7 +11,8 @@ import (
 )
 
 func InitCronJob(client *bot.Client) gocron.Scheduler {
-	scheduler, err := gocron.NewScheduler(gocron.WithLocation(time.Local))
+	location, _ := time.LoadLocation("America/Los_Angeles")
+	scheduler, err := gocron.NewScheduler(gocron.WithLocation(location))
 	if err != nil {
 		panic("Failed to start cron scheduler!")
 	}
@@ -19,13 +20,9 @@ func InitCronJob(client *bot.Client) gocron.Scheduler {
 	workday.InitJobsCache()
 
 	j, err := scheduler.NewJob(
-		gocron.DailyJob(
-			1,
-			gocron.NewAtTimes(
-				gocron.NewAtTime(6, 0, 0),
-				gocron.NewAtTime(8, 0, 0),
-				gocron.NewAtTime(12, 0, 0),
-			),
+		gocron.CronJob(
+			"0 6-12 * * 1-5",
+			false,
 		),
 		gocron.NewTask(workday.GetNewJobPostings, client),
 	)
