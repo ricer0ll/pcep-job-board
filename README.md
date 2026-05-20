@@ -24,8 +24,6 @@ $ pwd
 Install go packages:  
 `$ go mod tidy`  
 
-A `.docker-compose.yaml` has been provided to easily spin up and down the container. Remove the first period.  
-
 Start the docker container with:  
 `$ docker compose up -d --build`  
 
