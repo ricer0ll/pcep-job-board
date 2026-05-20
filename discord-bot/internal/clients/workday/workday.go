@@ -27,7 +27,11 @@ func InitJobsCache() {
 	}
 
 	for _, company := range companies {
-		jobs, err := getWorkdayJobPostings(company.WorkdayRequestURL, company.JobFamilyGroupIDs)
+		jobs, err := getWorkdayJobPostings(
+			company.WorkdayRequestURL,
+			company.JobFamilyGroupIDs,
+			company.Locations,
+		)
 		if err != nil {
 			slog.Error(fmt.Sprintf("Unable to get job postings from %s", company.Name))
 			continue
@@ -45,7 +49,11 @@ func GetNewJobPostings(client *bot.Client) {
 
 	for _, company := range companies {
 		// get workday job postings
-		liveJobs, err := getWorkdayJobPostings(company.WorkdayRequestURL, company.JobFamilyGroupIDs)
+		liveJobs, err := getWorkdayJobPostings(
+			company.WorkdayRequestURL,
+			company.JobFamilyGroupIDs,
+			company.Locations,
+		)
 		if err != nil {
 			slog.Error(fmt.Sprintf("Unable to get job postings from %s", company.Name))
 			continue
@@ -78,12 +86,13 @@ func notifyNewJob(client *bot.Client, jobPosting *dto.JobPosting, company string
 	}
 }
 
-func getWorkdayJobPostings(url string, jobFamilyGroup []string) ([]dto.JobPosting, error) {
+func getWorkdayJobPostings(url string, jobFamilyGroup []string, locations []string) ([]dto.JobPosting, error) {
 	jobPostings := []dto.JobPosting{}
 
 	request := dto.JobPostingRequest{
 		AppliedFacets: dto.AppliedFacet{
 			JobFamilyGroup: jobFamilyGroup,
+			Locations:      locations,
 		},
 	}
 

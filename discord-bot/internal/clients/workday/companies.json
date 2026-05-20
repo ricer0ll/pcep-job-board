@@ -6,7 +6,8 @@
             "WorkdayRequestURL": "https://standard.wd1.myworkdayjobs.com/wday/cxs/standard/Search/jobs",
             "JobFamilyGroupIDs": [
                 "4b3d59d7ab731002007ca34c13c90000"
-            ]
+            ],
+            "Locations": []
         },
         {
             "Name": "Apex Fintech Solutions",
@@ -14,6 +15,19 @@
             "WorkdayRequestURL": "https://peak6group.wd1.myworkdayjobs.com/wday/cxs/peak6group/apexfintechsolutions/jobs",
             "JobFamilyGroupIDs": [
                 "9319b7dfa5ee10212c5612fee7de0000"
+            ],
+            "Locations": []
+        },
+        {
+            "Name": "Trimble",
+            "WorkdayBaseURL": "https://trimble.wd1.myworkdayjobs.com/en-US/TrimbleCareers/jobs",
+            "WorkdayRequestURL": "https://trimble.wd1.myworkdayjobs.com/wday/cxs/trimble/TrimbleCareers/jobs",
+            "JobFamilyGroupIDs": [
+                "6b5c4bb5e73601d3677c6fe48dd94c0c"
+            ],
+            "Locations": [
+                "baf3c1ba86ad010bb11ef67d1701fc4a",
+                "7d68730cb13c42d0b43d6246e83eff90"
             ]
         }
     ]

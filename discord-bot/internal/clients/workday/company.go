@@ -11,6 +11,7 @@ type Company struct {
 	WorkdayBaseURL    string
 	WorkdayRequestURL string
 	JobFamilyGroupIDs []string
+	Locations         []string
 }
 
 type Config struct {
