@@ -24,7 +24,7 @@
         },
         {
             "Name": "Trimble",
-            "WorkdayBaseURL": "https://trimble.wd1.myworkdayjobs.com/en-US/TrimbleCareers/jobs",
+            "WorkdayBaseURL": "https://trimble.wd1.myworkdayjobs.com/en-US/TrimbleCareers",
             "WorkdayRequestURL": "https://trimble.wd1.myworkdayjobs.com/wday/cxs/trimble/TrimbleCareers/jobs",
             "JobFamilyGroup": ["e688aebf818d41558272955aa47a9c1f"],
             "JobFamily": [
