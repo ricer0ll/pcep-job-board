@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"path/filepath"
 
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
@@ -14,6 +15,7 @@ import (
 )
 
 var jobsCache map[string][]dto.JobPosting = make(map[string][]dto.JobPosting)
+var companyJsonPath = filepath.Join("internal", "clients", "workday", "companies.json")
 
 // list of channels to notify
 var channelIDs []string = []string{
@@ -21,15 +23,19 @@ var channelIDs []string = []string{
 }
 
 func InitJobsCache() {
-	companies, err := loadCompanies()
+	companies, err := loadCompanies(companyJsonPath)
 	if err != nil {
 		panic("Unable to load companies")
 	}
 
+	slog.Info(fmt.Sprintf("Loaded %d companies from config", len(companies)))
+
 	for _, company := range companies {
 		jobs, err := getWorkdayJobPostings(
 			company.WorkdayRequestURL,
-			company.JobFamilyGroupIDs,
+			company.JobFamily,
+			company.JobFamilyGroup,
+			company.LocationCountry,
 			company.Locations,
 		)
 		if err != nil {
@@ -42,7 +48,7 @@ func InitJobsCache() {
 }
 
 func GetNewJobPostings(client *bot.Client) {
-	companies, err := loadCompanies()
+	companies, err := loadCompanies(companyJsonPath)
 	if err != nil {
 		panic("Unable to load companies")
 	}
@@ -51,7 +57,9 @@ func GetNewJobPostings(client *bot.Client) {
 		// get workday job postings
 		liveJobs, err := getWorkdayJobPostings(
 			company.WorkdayRequestURL,
-			company.JobFamilyGroupIDs,
+			company.JobFamily,
+			company.JobFamilyGroup,
+			company.LocationCountry,
 			company.Locations,
 		)
 		if err != nil {
@@ -86,13 +94,20 @@ func notifyNewJob(client *bot.Client, jobPosting *dto.JobPosting, company string
 	}
 }
 
-func getWorkdayJobPostings(url string, jobFamilyGroup []string, locations []string) ([]dto.JobPosting, error) {
+func getWorkdayJobPostings(
+	url string,
+	jobFamily []string,
+	jobFamilyGroup []string,
+	locationCountry []string,
+	locations []string,
+) ([]dto.JobPosting, error) {
 	jobPostings := []dto.JobPosting{}
 
 	request := dto.JobPostingRequest{
 		AppliedFacets: dto.AppliedFacet{
-			JobFamilyGroup: jobFamilyGroup,
-			Locations:      locations,
+			JobFamilyGroup:  jobFamilyGroup,
+			LocationCountry: locationCountry,
+			Locations:       locations,
 		},
 	}
 

@@ -1,8 +1,10 @@
 package dto
 
 type AppliedFacet struct {
-	JobFamilyGroup []string `json:"jobFamilyGroup"`
-	Locations      []string `json:"locations"`
+	JobFamily       []string `json:"jobFamily,omitempty"`
+	JobFamilyGroup  []string `json:"jobFamilyGroup,omitempty"`
+	Locations       []string `json:"locations,omitempty"`
+	LocationCountry []string `json:"locationCountry,omitempty"`
 }
 
 type JobPosting struct {
