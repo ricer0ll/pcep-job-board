@@ -44,6 +44,7 @@ func GetNewJobPostings(client *bot.Client) {
 	}
 
 	for _, company := range companies {
+		// get workday job postings
 		liveJobs, err := getWorkdayJobPostings(company.WorkdayRequestURL, company.JobFamilyGroupIDs)
 		if err != nil {
 			slog.Error(fmt.Sprintf("Unable to get job postings from %s", company.Name))
@@ -51,7 +52,7 @@ func GetNewJobPostings(client *bot.Client) {
 		}
 
 		// add to id cache to check later (basically a set)
-		cachedIDs := make(map[string]struct{}) // Bullet Fields = ID
+		cachedIDs := make(map[string]struct{}) // Bullet Fields = ID (sorta)
 		for _, job := range jobsCache[company.Name] {
 			cachedIDs[job.BulletFields[0]] = struct{}{}
 		}
@@ -59,7 +60,7 @@ func GetNewJobPostings(client *bot.Client) {
 		for _, job := range liveJobs {
 			_, ok := cachedIDs[job.BulletFields[0]]
 			if !ok {
-				notifyNewJob(client, &job, company.Name, company.WorkdayBaseURL)
+				notifyNewJob(client, &job, company.Name, company.WorkdayBaseURL) // notify on discord if new job
 			}
 		}
 
