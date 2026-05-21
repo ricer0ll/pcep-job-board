@@ -13,7 +13,7 @@ Adding more soon! If you want to suggest a company, feel free to create a reques
 Contributions are also welcomed. The bot is written in Go using the [DisGo](https://github.com/disgoorg/disgo) library. 
 
 ## Running Locally
-You may also run this bot locally on your machine using your own Discord Bot Token and can specify which channel to send notifications to. Create a copy of the `.env.example` and replace the values. To run locally, you can try running it directly, but I recommend installing Docker and DOcker Compose in your system to ensure it runs on every system.
+You may also run this bot locally on your machine using your own Discord Bot Token and can specify which channel to send notifications to. Create a copy of the `.env.example` and replace the values. To run locally, you can try running it directly, but I recommend installing Docker and Docker Compose in your system to ensure it runs on every system.
 
 Then, change your current working directory to the root of `discord-bot` directory:  
 ```
