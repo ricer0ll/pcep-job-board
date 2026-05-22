@@ -9,6 +9,9 @@ The bot uses the company's Workday API to fetch job listings, with a scheduled c
 
 Adding more soon! If you want to suggest a company, feel free to create a request on the [Issues](https://github.com/ricer0ll/pcep-job-board/issues) section.  
 
+![Raspberry Pi](images/pi.jpg)
+Here's my Raspberry Pi that runs the Discord bot 24/7 on the PCEP discord server!
+
 ## Contributing
 Contributions are also welcomed. The bot is written in Go using the [DisGo](https://github.com/disgoorg/disgo) library. 
 
